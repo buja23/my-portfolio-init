@@ -6,6 +6,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import EmailIcon from '@mui/icons-material/Email';
 import StyledButton from "../../../../components/StyledButton/StyledButton";
 import CV from "../../../../assets/pdfs/Open.pdf"
+import SplitText from "../../../../components/AnimationComponent/SpliteText";
+import '../HeroSection/hero.css';
 
 const HeroSection: React.FC = () => {
 
@@ -47,6 +49,10 @@ const HeroSection: React.FC = () => {
         document.body.removeChild(link);
     };
 
+    const handleAnimationComplete = () => {
+  console.log('All letters have animated!');
+};
+
     const handleEmail = () => {
         const emailAddress = 'example@example.com';
         const subject = 'Subject';
@@ -59,7 +65,6 @@ const HeroSection: React.FC = () => {
     return (
         <>
             <StyledHero style={{ position: "relative", overflow: "hidden" }}>
-                {/* Background animado ocupa toda a área do HeroSection, mas não passa dele */}
                 <Box
                     sx={{
                         position: "absolute",
@@ -83,9 +88,21 @@ const HeroSection: React.FC = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={7}>
-                            <Typography color="primary.contrastText" variant="h1" pb={2} textAlign="center">
-                                Victor Azambuja
-                            </Typography>
+                              <SplitText
+                                    text="Victor Azambuja"
+                                    className="text-2xl"
+                                    delay={100}
+                                    duration={0.6}
+                                    ease="power3.out"
+                                    splitType="chars"
+                                    from={{ opacity: 0, y: 40 }}
+                                    to={{ opacity: 1, y: 0 }}
+                                    threshold={0.1}
+                                    rootMargin="-100px"
+                                    textAlign="center"
+                                    onLetterAnimationComplete={handleAnimationComplete}
+                                    variant="h1" color="primary.contrastText"
+                                />
                             <Typewriter text="Estudante de Análise e Desenvolvimento de Sistemas" delay={120} variant="h2" color="primary.contrastText" />
                             <Box mt={3}>
                                 <Grid container spacing={3} display="flex" justifyContent="center">
@@ -116,3 +133,4 @@ const HeroSection: React.FC = () => {
 }
 
 export default HeroSection
+
