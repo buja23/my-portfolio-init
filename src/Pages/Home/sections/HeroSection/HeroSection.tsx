@@ -1,12 +1,12 @@
 import { Box, Container, Grid, Typography, styled } from "@mui/material"
 import AnimatedBackground from "../../../../components/AnimatedBackground/AnimatedBackground";
-import Typewriter from "../../../../components/Typewriter/Typewriter"
 import Avatar from "../../../../assets/images/avatar.png"
 import DownloadIcon from '@mui/icons-material/Download';
 import EmailIcon from '@mui/icons-material/Email';
 import StyledButton from "../../../../components/StyledButton/StyledButton";
 import CV from "../../../../assets/pdfs/Open.pdf"
 import SplitText from "../../../../components/AnimationComponent/SpliteText";
+import BlurText from "../../../../components/AnimationComponent/BluerText";
 import '../HeroSection/hero.css';
 
 const HeroSection: React.FC = () => {
@@ -103,7 +103,15 @@ const HeroSection: React.FC = () => {
                                     onLetterAnimationComplete={handleAnimationComplete}
                                     variant="h1" color="primary.contrastText"
                                 />
-                            <Typewriter text="Estudante de Análise e Desenvolvimento de Sistemas" delay={120} variant="h2" color="primary.contrastText" />
+                            <BlurText
+                                text="Estudante de Análise e Desenvolvimento de Sistemas"
+                                delay={200}
+                                animateBy="words"
+                                direction="top"
+                                onAnimationComplete={handleAnimationComplete}
+                                className="text-2xl mb-8"
+                                variant="h2" color="primary.contrastText"
+                                />
                             <Box mt={3}>
                                 <Grid container spacing={3} display="flex" justifyContent="center">
                                     <Grid item xs={10} md={4}>

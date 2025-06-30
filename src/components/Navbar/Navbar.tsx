@@ -1,105 +1,60 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { styled } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import './Navbar.css';
 
-export const StyledNavLink = styled("a")(() => ({
-    textDecoration: "none",
-    color: "inherit"
-}));
-
-export const StyledMobileToolbar = styled(Toolbar)(({ theme }) => ({
-    [theme.breakpoints.up('xs')]: {
-        display: "flex",
-        justifyContent: "end"
-    },
-    [theme.breakpoints.up('md')]: {
-        display: "none",
-    },
-}));
-
-export const StyledDesktopToolbar = styled(Toolbar)(({ theme }) => ({
-    [theme.breakpoints.up('xs')]: {
-        display: "none",
-    },
-    [theme.breakpoints.up('md')]: {
-        display: "flex",
-        justifyContent: "space-evenly",
-    },
-}));
+const NAV_LINKS = [
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'projects', label: 'Projects' },
+];
 
 export default function Navbar() {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [affix, setAffix] = useState(false);
 
-    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
+  useEffect(() => {
+    const handleScroll = () => {
+      setAffix(window.scrollY > 50);
     };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    const handleClose = () => {
-        setAnchorEl(null);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) setMenuOpen(false);
     };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    const handleSmoothScroll = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-            handleClose();
-        }
-    };
+  // Função universal para scroll suave
+  const handleSmoothScroll = (sectionId: string) => {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      setMenuOpen(false);
+    }
+  };
 
-    return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="absolute">
-                <StyledMobileToolbar>
-                    <IconButton
-                        size="large"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleMenu}
-                        color="inherit"
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={() => handleSmoothScroll("about")}>
-                            <StyledNavLink>About</StyledNavLink>
-                        </MenuItem>
-                        <MenuItem onClick={() => handleSmoothScroll("skills")}>
-                            <StyledNavLink>Skills</StyledNavLink>
-                        </MenuItem>
-                        <MenuItem onClick={() => handleSmoothScroll("projects")}>
-                            <StyledNavLink>Projects</StyledNavLink>
-                        </MenuItem>
-                    </Menu>
-                </StyledMobileToolbar>
-                <StyledDesktopToolbar variant="regular">
-                    <MenuItem onClick={() => handleSmoothScroll("about")}>
-                        <StyledNavLink>About</StyledNavLink>
-                    </MenuItem>
-                    <MenuItem onClick={() => handleSmoothScroll("skills")}>
-                        <StyledNavLink>Skills</StyledNavLink>
-                    </MenuItem>
-                    <MenuItem onClick={() => handleSmoothScroll("projects")}>
-                        <StyledNavLink>Projects</StyledNavLink>
-                    </MenuItem>
-                </StyledDesktopToolbar>
-            </AppBar>
-        </Box >
-    );
+  return (
+    <nav className={`nav${affix ? ' affix' : ''}`}> {/* affix class for shrink effect */}
+      <div className="container">
+        <div id="mainListDiv" className={`main_list${menuOpen ? ' show_list' : ''}`}
+          style={menuOpen ? { display: 'block' } : {}}>
+          <ul className="navlinks">
+            {NAV_LINKS.map(link => (
+              <li key={link.id}>
+                <a href={`#${link.id}`} onClick={e => { e.preventDefault(); handleSmoothScroll(link.id); }}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <span className={`navTrigger${menuOpen ? ' active' : ''}`} onClick={() => setMenuOpen(m => !m)} aria-label="menu" tabIndex={0} role="button">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+      </div>
+    </nav>
+  );
 }
