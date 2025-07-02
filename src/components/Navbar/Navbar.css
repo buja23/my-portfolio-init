@@ -16,8 +16,9 @@
 
 .nav.affix {
     padding: 0;
-    background:transparent;
+    background-color: #0000007a;
     backdrop-filter: blur(4px);
+     box-shadow: 0 4px 16px -4px rgba(0,0,0,0.18); /* shadow bottom */
 }
 
 .container {
@@ -28,7 +29,7 @@
     align-items: center;
     justify-content: center;
     height: 65px;
-    box-shadow: 0 4px 16px -4px rgba(0,0,0,0.18); /* shadow bottom */
+
 }
 
 .logo {
